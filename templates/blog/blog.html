@@ -1,0 +1,131 @@
+{% extends 'layout.html' %}
+
+{% block title %}
+  {{header}}
+{% endblock %}
+
+
+{% block head %}
+<ul class="nav nav-pills nav-fill mt-5">
+  <li class="nav-item">
+    <a class="nav-link cat-nav" href="/blog"><i class="fa fa-globe mr-2"></i>All Articles</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link cat-nav" href="/blog/travel"><i class="fa fa-plane mr-2"></i>Travel</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link cat-nav" href="/blog/work"><i class="fa fa-desktop mr-2"></i>Work</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link cat-nav" href="/blog/photography"><i class="fa fa-camera mr-2"></i>Photography</a>
+  </li>
+</ul>
+<div class="blog-head">
+  <h1> {{header}}</h1>
+</div>
+
+{% endblock %}
+
+{% block content %}
+    <!-- Main Content -->
+<div class="row blog-container">
+  <section class="col-lg-8 col-md-12 post-section">
+    <figure class="row featured-posts-slider">
+      <div id="slider" class="carousel slide" data-ride="carousel">
+        <ol class="carousel-indicators">
+          <li data-target="#slider" data-slide-to="0" class="active"></li>
+          <li data-target="#slider" data-slide-to="1"></li>
+          <li data-target="#slider" data-slide-to="2"></li>
+        </ol>
+        <div class="carousel-inner">
+          {% set counter = namespace(a=0) %}
+          {% for post in posts.items %}
+          {% if counter.a == 0 %}
+            <div class="carousel-item active">
+          {% else %}
+            <div class="carousel-item">
+          {% endif %}
+          {% set counter.a = counter.a + 1 %}
+            <img class="d-block w-100" src="{{post.imgsrc}}" alt="slide {{counter.a}}">
+            <div class="carousel-caption d-md-block">
+              <a href="{{url_for('article', slug=post.slug)}}"><h2>{{post.title}}</h2></a>
+            </div>
+          </div>
+        {% endfor %}
+        </div>
+        <a class="carousel-control-prev" href="#slider" role="button" data-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="sr-only">Previous</span>
+        </a>
+        <a class="carousel-control-next" href="#slider" role="button" data-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="sr-only">Next</span>
+        </a>
+      </div>
+    </figure>
+     <div class="row">
+        <div class="col-lg-12 mx-auto">
+          {% for post in posts.items %}
+        <article class="row  blog-item">
+          <div class="col-lg-12 post-container">
+            <a href="{{url_for('article', slug=post.slug)}}">
+              <h2 class="post-title">
+               {{post.title}}
+              </h2>
+            </a>
+              <p class="post-meta text-muted">Posted by
+                <a href="#">{{post.author.fullname}}</a>
+                on {{post.publish_date.strftime('%d - %m - %y')}}
+              </p>
+          {% if post.img %}
+              <a href="{{url_for('article', slug=post.slug)}}">
+                <img class="post_preview_picture" src="{{post.imgsrc}}" />
+              </a>
+          {% endif %}
+          <span class="post-preview-text">
+            {{post.body[0:500]}}
+          </span>
+          </div>
+        </article>
+        {% endfor %}
+       </div>
+     </div>
+     <div class="paginate-buttons-container">
+        <span>
+        {% if posts.has_prev %}
+        <a class="btn btn-dark paginate_button" role="button" href="{{ url_for('blog', page=posts.prev_num) }}">Newer Posts</a>
+        {% else %}
+        <button class="btn btn-dark paginate_button" disabled>Newer Posts</button>
+        {% endif %}
+        </span>
+        <span>
+        {% if posts.has_next %}
+          <a class="btn btn-dark paginate_button" role="button" href="{{ url_for('blog', page=posts.next_num) }}">Older Posts</a>
+        {% else %}
+        <button class="btn btn-dark paginate_button" disabled>Older Posts</button>
+        {% endif %}
+        </span>
+    </div>
+  </section>
+  <aside class="col-lg-4 blog-aside">
+      <div class="aside-item">
+        <h1>Search</h1>
+      </div>
+      <div class="aside-item">
+        <h1>About</h1>
+      </div>
+      <div class="aside-item">
+        <h1>Links</h1>
+      </div>
+      <div class="aside-item">
+        <h1>Categories</h1>
+      </div>
+      <div class="aside-item">
+        <h1>Posts by Date</h1>
+      </div>
+    <div>
+  </aside>
+</div>
+
+    <hr>
+{% endblock %}

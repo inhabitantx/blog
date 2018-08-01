@@ -1,0 +1,35 @@
+{% extends 'admin.html' %}
+
+
+{% block title %}
+  Create Blog
+{% endblock %}
+
+
+{% block content %}
+    <!-- Page Header -->
+    <header class="masthead" style="background-image: url('{{url_for('static', filename='img/post-bg.jpg') }}'); width:auto;">
+    </header>
+    <h1>Create new Blog:</h1>
+    <hr>
+     {% from "_formhelpers.html" import render_field %}
+
+         <form action="{{ url_for('setup') }}" role="form" method="post">
+
+            {{form.hidden_tag() }}
+
+            {{ render_field(form.title, class="form-control") }}
+            {{ render_field(form.category1, class="form-control") }}
+            {{ render_field(form.category2, class="form-control") }}
+            {{ render_field(form.category3, class="form-control") }}
+            {{ render_field(form.fullname, class="form-control") }}
+            {{ render_field(form.email, class="form-control") }}
+            {{ render_field(form.username, class="form-control") }}
+            {{ render_field(form.password, class="form-control") }}
+            {{ render_field(form.confirm, class="form-control" ) }}
+
+            <button class="btn btn-lg btn-primary btn-block mt-5 mb-5 col-md-4 offset-md-4" type="submit">Submit</button>
+         </form>
+
+
+{% endblock %}

@@ -1,0 +1,119 @@
+{% extends "layout.html" %}
+
+{% block title %} {{ post.title }} {% endblock %}
+
+{% block head %}
+{% if post.img %}
+    <img class="article_header_picture mt-3 mb-3" src="{{post.imgsrc}}" />
+{% endif %}
+{% endblock %}
+{% block content %}
+<div class="row article-section ">
+    <article class="col-lg-8 mt-4 pb-5 pt-3 pl-5 article-col">
+      <h1 class="article-title">{{ post.title }}</h1>
+      <p>
+          <small class="text-muted"><i class="fa fa-clock-o"></i>
+          Posted on {{ post.publish_date.strftime('%d - %m - %y') }} by <a href="#">{{post.author.fullname}}</a>
+          in <a href='#'>{{post.maincategory.name}}</a>
+          </small>
+      </p>
+      {% if session.get('is_author') %}
+      <p>
+          <a class="btn btn-primary" href="{{url_for('edit', post_id=post.id) }}">Edit</a>
+          <a class="btn btn-primary" href="{{url_for('delete', post_id=post.id) }}">Delete</a>
+      </p>
+      {% endif %}
+
+
+      <h2 class="article_heading mb-5 mt-3">{{post.title}}</h2>
+      <div class="post_body">
+        {{ post.body }}
+  </div>
+
+
+
+     <div class="text-muted">
+         <p>Posted by <a href="#">{{post.author.fullname}}</a> on {{ post.publish_date.strftime('%d-%m-%y') }} in <a href="#">{{post.maincategory.name}}</a></p>
+     </div>
+
+   </article>
+    <aside class="col-lg-3 article-aside mt-5 pt-5">
+      <h1 class="aside-heading mt-5">Search</h1>
+      <div class="aside-content">
+        <form>
+          <input class="form-control" type="text" name="article-search" placeholder="search" />
+          <button type="submit" class="btn btn-dark mt-3">Search</button>
+        </form>
+      </div>
+      <h1 class="aside-heading">info</h1>
+      <p class="aside-content">
+        Here is some amazing information
+      </p>
+      <h1 class="aside-heading">info</h1>
+      <p class="aside-content">
+        Here is some amazing information
+      </p>
+      <h1 class="aside-heading">info</h1>
+      <p class="aside-content">
+        Here is some amazing information
+      </p>
+    <aside>
+</div>
+<hr>
+<div class="row pt-5 comment-section">
+
+    <div class="col-lg-8 mt-3 pl-5 pr-5">
+      <h2>Write new Comment:</h2>
+        <form method="POST" action="{{url_for('comment', post_id=post.id ) }}">
+        {% from "_formhelpers.html" import render_field %}
+
+            {{ form.hidden_tag() }}
+
+            {{render_field(form.name, class="form-control") }}
+            {{render_field(form.email, class="form-control") }}
+            {{render_field(form.body, class="form-control" ) }}
+
+        <button class="btn btn-dark" type="submit">Submit</button>
+        </form>
+    </div>
+</div>
+{% if comments %}
+
+<h1 class="ml-3 mt-5">Comments:</h1>
+{% for comment in comments %}
+  <div class="row mt-5">
+    <div class="col-lg-8 pl-5 comment-col">
+        <hr>
+        <div class="comment_item">
+          <p class="h3">From: {{comment.name}} on {{comment.publish_date}}:</p>
+          <p>{{comment.body}}</p>
+          <Button class="btn btn-dark reply_button mb-5" data-commentid="{{comment.id}}">Reply</Button>
+        </div>
+        {% set counter = namespace(a=0) %}
+        {% if replies %}
+          {% for reply in replies %}
+            {% if reply.comment_id == comment.id %}
+              {% set counter.a = counter.a + 1 %}
+            {% endif %}
+          {% endfor %}
+          {{counter.a}} replies.
+        {% endif %}
+        {% if counter.a > 0 %}
+                <button class="btn btn-dark show_more_button" id="show_replies_button{{comment.id}}" data-commentid="{{comment.id}}">Show replies</button>
+                <button class="btn btn-dark hide_replies_button" id="hide_replies_button{{comment.id}}" data-commentid="{{comment.id}}">Hide replies</button>
+        {% endif %}
+        <div class="row">
+          <div class="col-md-8 offset-md-2 offset-sm-0 replyformdiv mt-3" id="reply_input{{comment.id}}"></div>
+        </div>
+        <div class="row">
+          <div class="col-md-8 offset-md-3 offset-sm-0 mt-5" id="reply_div{{comment.id}}"></div>
+        </div>
+    </div>
+
+</div>
+{% endfor %}
+
+{% endif %}
+<!-- /.row -->
+
+{% endblock %}

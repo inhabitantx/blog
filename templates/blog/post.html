@@ -1,0 +1,62 @@
+{% extends 'admin.html' %}
+
+
+{% block title %}
+  Blogposts
+{% endblock %}
+
+
+{% block content %}
+    <!-- Page Header -->
+
+
+        <div class="row pt-3 pl-3">
+            {% if action == 'new' %}
+            <h1 class="postform-heading">New Blogpost</h1>
+            {% else %}
+            <h1 class="postform-heading">Edit Blogpost</h1>
+            {% endif %}
+        </div>
+        <div class="row">
+          <div class="col-lg-8 offset-lg-2 col-md-10 mt-5 mb-5">
+
+              {% from "_formhelpers.html" import render_field %}
+              {% if action == 'new' %}
+              <form method="POST" action="{{ url_for('blogpost') }}" enctype="multipart/form-data" role="form" class="postform">
+              {% else %}
+              <form method="POST" action="{{ url_for('edit', post_id=post.id) }}" enctype="multipart/form-data" role="form" class="postform">
+              {% endif %}
+
+                {{ form.hidden_tag() }}
+
+                {% if post and post.image %}
+                  <img class="post_preview_picture" src="{{post.imgsrc}}" />
+                {% endif %}
+
+                {{render_field(form.image, class="form-control") }}
+                {{render_field(form.title, class="form-control") }}
+                {{render_field(form.body, class="form-control", rows=10) }}
+                {{render_field(form.keywords, class="form-control")}}
+                {{render_field(form.maincategory, class="form-control") }}
+                {{render_field(form.subcategory, class="form-control") }}
+                {{render_field(form.new_subcategory, class="form-control") }}
+                {{render_field(form.subsubcategory, class="form-control") }}
+                {{render_field(form.new_subsubcategory, class="form-control") }}
+
+
+                {% if action == 'new' %}
+                   <button type="submit" class="btn btn-primary">Post</button>
+                {% else %}
+                   <button type="submit" class="btn btn-primary">Submit</button>
+                {% endif %}
+
+              </form>
+            </div>
+          </div>
+        </div>
+
+
+
+    <hr>
+
+{% endblock %}

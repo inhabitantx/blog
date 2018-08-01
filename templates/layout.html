@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Final Project - {% block title %}{% endblock %}</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="{{url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
+
+    <!-- Custom fonts for this template -->
+    <link href="{{url_for('static', filename='fonts/font-awesome.min.css') }}" rel="stylesheet" type="text/css">
+    <link href='https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+
+    <!-- Custom styles for this template -->
+    <link href="{{url_for('static', filename='css/blog.css') }}" rel="stylesheet">
+     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- React.js -->
+
+    <script src="{{url_for('static', filename='js/babel.min.js')}}" type="text/javascript"></script>
+    <script src="{{url_for('static', filename='js/babili.js')}}" type="text/javascript"></script>
+    <script src="{{url_for('static', filename='js/react.js')}}" type="text/javascript"></script>
+    <script src="{{url_for('static', filename='js/react-dom.js')}}" type="text/javascript"></script>
+    <script src="{{url_for('static', filename='js/react-nav.js')}}" type="text/babel"></script>
+    <script src="{{url_for('static', filename='js/react-subscription-module.js')}}" type="text/babel"></script>
+  </head>
+
+  <body>
+    <div class="container-fluid main-wrapper">
+      <div id="subscription-popup">
+      </div>
+        <!-- Navigation -->
+          <header class="layout-header">
+            <nav class="navbar navbar-expand-lg navbar-light">
+              <div id="logo"><a class="navbar-brand" href="/">Final Project</a></div>
+              <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+              </button>
+
+              <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
+                <ul class="navbar-nav">
+                  <li class="nav-item nav-menuitem">
+                    <a class="nav-link" href="/"><i class="fa fa-home mr-2"></i>Home <span class="sr-only">(current)</span></a>
+                  </li>
+                  <li class="nav-item dropdown nav-menuitem">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      <i class="fa fa-book mr-2"></i>Blog
+                    </a>
+
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                      <a class="dropdown-item" href="/blog">All Articles</a>
+                      <div class="dropdown-divider"></div>
+                      <div class="react-menu-item" id="react-menu-item"></div>
+                    </div>
+                    <div id="menu-container">
+                    </div>
+                  </li>
+                  <li class="nav-item nav-util">
+                    <a class="nav-link" id="show-search" href="#"><i class="fa fa-search"></i></a>
+                  </li>
+                  {% if session['username'] %}
+                  <li class="nav-item nav-util">
+                    <a class="nav-link" href="{{url_for('admin') }}"><i class="fa fa-cog fa-fw"></i> Admin</a>
+                  </li>
+                  <li class="nav-item nav-util">
+                    <a class="nav-link" href="{{url_for('logout') }}"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
+                  </li>
+                  {% else %}
+                  <li class="nav-item nav-util">
+                    <a class="nav-link" href="{{url_for('login') }}"><i class="fa fa-sign-in fa-fw"></i></a>
+                  </li>
+                  {% endif %}
+                </ul>
+              </div>
+            </nav>
+          <section class="info-header">
+          {% if latestposts %}
+          <div id="info-slider">
+          <h4 class="slider-heading">Latest</h4>
+            <div id="carouselExampleControls" class="carousel vert slide" data-ride="carousel" data-interval="900">
+              <div class="carousel-inner">
+                {% set counter = namespace(a=0) %}
+                {% for post in latestposts %}
+                {% if counter.a == 0 %}
+                  <div class="carousel-item active">
+                {% else %}
+                  <div class="carousel-item">
+                {% endif %}
+                {% set counter.a = counter.a + 1 %}
+                  <a href="/article/{{post.slug}}">{{post.title}}<h3>
+                </div>
+                {% endfor %}
+              </div>
+            </div>
+          </div>
+            {% endif %}
+            <ul class="info-header-buttons">
+              <li class="info-header-items" title="Twitter">
+                <a target="_blank" href="#"><i class="fa fa-twitter fa-lg fa-twitter-menu"></i></a>
+              </li>
+              <li class="info-header-items" title="Facebook">
+                <a target="_blank" href="#"><i class="fa fa-facebook fa-lg fa-facebook-menu"></i></a>
+              </li>
+              <li class="info-header-items" title="Google+">
+                <a target="_blank" href="#"><i class="fa fa-google-plus fa-lg fa-google-plus-menu"></i></a>
+              </li>
+              <li class="info-header-items" title="Pinterest">
+                <a target="_blank" href="#"><i class="fa fa-pinterest fa-lg fa-pinterest-menu"></i></a>
+              </li>
+              <li class="info-header-items" title="Instagram">
+                <a target="_blank" href="#"><i class="fa fa-instagram fa-lg fa-instagram-menu"></i></a>
+              </li>
+              <li class="info-header-items" title="StumbleUpon">
+                <a target="_blank" href="#"><i class="fa fa-stumbleupon fa-lg fa-stumbleupon-menu"></i></a>
+              </li>
+              <li class="info-header-items" title="RSS">
+                <a target="_blank" href="#"><i class="fa fa-rss fa-lg fa-rss-menu"></i></a>
+              </li>
+              <li class="info-header-items" title="Email"><a target="_blank" href="/contact"><i class="fa fa-envelope fa-lg fa-envelope-menu"></i></a>
+              </li>
+            </ul>
+          </section>
+          <div class="searchdiv">
+            <div class="formcontainer">
+              <span class="close_searchfield"><a href="#"><i class="fa fa-close"></i></a></span>
+              <form class="row" id="searchfield" action="/search" method="POST">
+                 <input class="col-lg-8 typeahead" data-provide="typeahead" name="searchbar" id="searchbar" type="search" placeholder="search" />
+                 <span><i id="searchbutton" class="fa fa-search btn btn-primary searchbutton col-lg-3"></i></span>
+               </form>
+             </div>
+          </div>
+      </header>
+
+      {% block head %}
+
+      {% endblock %}
+      <div class="flash-messages">
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    <div id="messages">
+                        <ul class="flash">
+                            {% for message in messages %}
+                                <li>{{message}}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                {% endif %}
+            {% endwith %}
+      </div>
+
+
+
+          {% block content %}
+
+          {% endblock %}
+
+
+      <!-- Footer -->
+      <footer>
+            <div class="row footer-heading">
+              <div class="col-lg-4">
+                <h2>About</h2>
+              </div>
+              <div class="col-lg-4">
+                <h2>Subscribe now!</h2>
+              </div>
+              <div class="col-lg-4">
+                <h2>Follow me</h2>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-lg-4 footer-about">
+                <img class="footer-logo" src="#" alt="footer-logo"/>
+                <p class="footer-about-text">I travel the world since i decided to sell everything i had,
+                  buy myself a decent camera and change my life forever.</p>
+                <p>This is my story. Subscribe and join my endless trip!</p>
+              </div>
+              <div class="col-lg-4 footer-subscribe" id="footer-subscription">
+                <!-- React SubscriptionInput -->
+              </div>
+              <div class="col-lg-4 footer-social">
+                <div class="footer-social-buttons">
+                  <ul class="list-inline text-center">
+                    <li class="list-inline-item">
+                      <a href="#">
+                        <span class="fa-stack fa-lg">
+                          <i class="fa fa-circle fa-stack-2x"></i>
+                          <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+                        </span>
+                      </a>
+                    </li>
+                    <li class="list-inline-item">
+                      <a href="#">
+                        <span class="fa-stack fa-lg">
+                          <i class="fa fa-circle fa-stack-2x"></i>
+                          <i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
+                        </span>
+                      </a>
+                    </li>
+                    <li class="list-inline-item">
+                      <a href="#">
+                        <span class="fa-stack fa-lg">
+                          <i class="fa fa-circle fa-stack-2x"></i>
+                          <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                        </span>
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <div class="row bottom-row">
+              <ul class="list-inline footer-bottom-link">
+                <li class="list-inline-item">
+                  <a href="#">About</a>
+                </li>
+                <li class="list-inline-item">
+                  <a href="#">Partnership</a>
+                </li>
+                <li class="list-inline-item">
+                  <a href="#">Contact</a>
+                </li>
+                <li class="list-inline-item">
+                  <a href="#">Privacy</a>
+                </li>
+              </ul>
+              <p class="copyright text-muted">Copyright &copy; Final Project 2018</p>
+            </div>
+      </footer>
+
+   <!-- Bootstrap core JavaScript -->
+    <script src="{{url_for('static', filename='js/jquery.min.js') }}" type="text/javascript"></script>
+    <script src="{{url_for('static', filename='js/bootstrap.bundle.min.js') }}" type="text/javascript"></script>
+    <!-- https://github.com/corejavascript/typeahead.js/blob/master/doc/jquery_typeahead.md -->
+    <script src="https://cdn.rawgit.com/corejavascript/typeahead.js/master/dist/typeahead.jquery.js"></script>
+
+    <!-- http://handlebarsjs.com/ -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.5/handlebars.min.js" type="text/javascript"></script>
+
+
+    <!-- Custom scripts for this template -->
+    <script src="{{url_for('static', filename='js/clean-blog.min.js') }}" type="text/javascript"></script>
+    <script src="{{url_for('static', filename='js/blog.js')}}" type="text/javascript"></script>
+
+  </body>
+
+</html>

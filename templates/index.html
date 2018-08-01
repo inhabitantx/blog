@@ -1,0 +1,158 @@
+{% extends "layout.html" %}
+
+{% block title %}
+  Strayblog | Home
+{% endblock %}
+
+
+{% block head %}
+
+  <div class="index-head d-flex flex-direction-column align-items-end">
+        <div class="header-jumbotron d-flex flex-direction-column align-items-center justify-content-center">
+          <div>
+            <h1>Fluid jumbotron</h1>
+            <p>This is a modified jumbotron that occupies the entire horizontal space of its parent.</p>
+            <button class="header-button">Start</button>
+          </div>
+        </div>
+  </div>
+
+{% endblock %}
+
+{% block content %}
+
+  <div class="main-section">
+      <section class="latest-posts row">
+        <h1 class="col-lg-12 section-heading">Latest Posts</h1>
+        {% if latestposts %}
+          {%for post in latestposts %}
+            <div class="featured col-lg-4">
+              <a href="article/{{post.slug}}">
+                <img class="post-preview-image" src="{{post.imgsrc}}" alt="Post Image">
+              </a>
+              <div class="post-preview-body">
+                <a href="article/{{post.slug}}">
+                  <h5 class="post-preview-title">{{post.title}}</h5>
+                  <p class="post-preview-text">{{post.body[0:150]}}</p>
+                </a>
+              </div>
+            </div>
+          {% endfor %}
+        {% endif %}
+      </section>
+      <div class="posts row">
+        <div class="col-lg-9">
+            {% if category1 %}
+          <section class="category-section row">
+            <h1 class="col-lg-12 section-heading">Travel</h1>
+            <div class="featured col-lg-6">
+              <div>
+                <a href="article/{{category1[0].slug}}">
+                  <img class="post-preview-image" src="{{category1[0].imgsrc}}" alt="Post Image">
+                </a>
+                <div class="post-preview-body">
+                  <a href="article/{{category1[0].slug}}">
+                    <h5 class="post-preview-title">{{category1[0].title}}</h5>
+                    <p class="post-preview-text">{{category1[0].body[0:150]}}</p>
+                  </a>
+                </div>
+              </div>
+            </div>
+            <div class="semi-featured col-lg-6">
+              {% for i in range(1,category1|length) %}
+                <div>
+                  <div class="post-preview-body">
+                    <a href="article/{{category1[i].slug}}">
+                      <h5 class="post-preview-title">{{category1[i].title}}</h5>
+                      <p class="post-preview-text">{{category1[i].body[0:150]}}</p>
+                    </a>
+                  </div>
+                </div>
+              {% endfor %}
+              </div>
+            </section>
+            {% endif %}
+            {% if category2 %}
+          <section class="category-section row">
+            <h1 class="col-lg-12 section-heading">Work</h1>
+            <div class="featured col-lg-6">
+              <div>
+                <a href="article/{{category2[0].slug}}">
+                  <img class="post-preview-image" src="{{category2[0].imgsrc}}" alt="Post Image">
+                </a>
+                <div class="post-preview-body">
+                  <a href="article/{{category2[0].slug}}">
+                    <h5 class="post-preview-title">{{category2[0].title}}</h5>
+                    <p class="post-preview-text">{{category2[0].body[0:150]}}</p>
+                  </a>
+                </div>
+              </div>
+            </div>
+            <div class="semi-featured col-lg-6">
+              {% for i in range(1,category2|length) %}
+                <div>
+                  <div class="post-preview-body">
+                    <a href="article/{{category2[i].slug}}">
+                      <h5 class="post-preview-title">{{category2[i].title}}</h5>
+                      <p class="post-preview-text">{{category2[i].body[0:150]}}</p>
+                    </a>
+                  </div>
+                </div>
+              {% endfor %}
+              </div>
+          </section>
+            {% endif %}
+            {% if category3 %}
+          <section class="category-section row">
+            <h1 class="col-lg-12 section-heading">Photography</h1>
+            <div class="featured col-lg-6">
+              <div>
+                <a href="article/{{category3[0].slug}}">
+                  <img class="post-preview-image" src="{{category3[0].imgsrc}}" alt="Post Image">
+                </a>
+                <div class="post-preview-body">
+                  <a href="article/{{category3[0].slug}}">
+                    <h5 class="post-preview-title">{{category3[0].title}}</h5>
+                    <p class="post-preview-text">{{category3[0].body[0:150]}}</p>
+                  </a>
+                </div>
+              </div>
+            </div>
+            <div class="semi-featured col-lg-6">
+              {% for i in range(1,category3|length) %}
+                <div>
+                  <div class="post-preview-body">
+                    <a href="article/{{category3[i].slug}}">
+                      <h5 class="post-preview-title">{{category3[i].title}}</h5>
+                      <p class="post-preview-text">{{category3[i].body[0:150]}}</p>
+                    </a>
+                  </div>
+                </div>
+              {% endfor %}
+              </div>
+            </section>
+            {% endif %}
+      </div>
+      <aside class="info col-lg-3">
+        <h1 class="aside-heading">info</h1>
+        <p class="aside-content">
+          Here is some amazing information
+        </p>
+        <h1 class="aside-heading">info</h1>
+        <p class="aside-content">
+          Here is some amazing information
+        </p>
+        <h1 class="aside-heading">info</h1>
+        <p class="aside-content">
+          Here is some amazing information
+        </p>
+        <h1 class="aside-heading">info</h1>
+        <p class="aside-content">
+          Here is some amazing information
+        </p>
+      </aside>
+    </div>
+  </div>
+
+
+{% endblock %}

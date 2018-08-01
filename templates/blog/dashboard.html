@@ -1,0 +1,106 @@
+{% extends "admin.html" %}
+
+{% block title %} Dashboard {% endblock %}
+
+
+{% block content %}
+
+<div class="row pt-3 pl-3">
+    <h1 class="dashboad-heading">Dashboard</h1>
+</div>
+<div class="row mt-4 heading-row">
+  <div class="col-lg-6">
+    <h2>Timeline</h2>
+  </div>
+  <div class="col-lg-4 ml-5">
+    <h2>New Comments and Replies</h2>
+  </div>
+</div>
+<div class="row pt-5 pl-3 content-row">
+
+    {% if posts.count() > 0 %}
+    <!-- /.panel-heading -->
+    <div class="col-lg-6">
+        <ul class="timeline">
+            {% for post in posts %}
+            <li class="timeline-item">
+                {% if post.imgsrc %}
+                <img class="float-right img-thumbnail timeline_thumbnail" src="{{post.imgsrc}}" />
+                {% endif %}
+                {% if post.live %}
+                <div class="timeline-symbol"><i class="fa fa-check"></i>
+                Live
+                {% else %}
+                <div class="timeline-symbol_deleted"><i class="fa fa-ban"></i>
+                Deleted
+                {% endif %}
+                </div>
+                <div class="timeline-post">
+                    <div class="timeline-heading">
+                        <h4 class="timeline-title"><a href="{{url_for('article', slug=post.slug) }}">{{ post.title }} {% if not post.live %}(Deleted){% endif %}</a></h4>
+                        <p>
+                            <small class="text-muted"><i class="fa fa-clock-o"></i>
+                            Posted on {{ post.publish_date.strftime('%d - %m - %y') }} by <a href="#">{{post.author.fullname}}</a>
+                            in <a href='#'>{{post.maincategory.name}}</a>
+                            </small>
+                        </p>
+                    </div>
+                    <div class="timeline-body ">
+                       <p class="post_content">
+                           {{ post.body[0:250] }}
+                       </p>
+                    </div>
+                </div>
+            </li>
+
+            {% endfor %}
+
+          </ul>
+      </div>
+        {% else %}
+            <div class="col-lg-6 mt-5">
+              <h3> ---- No Posts ---- </h3>
+            </div>
+        {% endif %}
+          <div class="col-lg-4 ml-5">
+        {% if comments %}
+            {% for comment in comments %}
+            <div class="timeline-item">
+              <h4><small class="text-muted">Posted by:</small> {{comment.name}} </h4>
+              <hr>
+              {{comment.body}}
+              <p>
+                <button class="btn btn-primary approve_comment_button" value="approvecomment" data-id="{{comment.id}}">Approve</button>
+                <button class="btn btn-danger delete_comment_button" value="deletecomment" data-id="{{comment.id}}">Delete</button>
+              </p>
+            </div>
+            {% endfor %}
+          {% else %}
+          <div class="timeline-item">
+            <h4>No new Comments</h4>
+          </div>
+          {% endif %}
+          {% if replies %}
+            {% for reply in replies %}
+            <div class="timeline-item">
+              <h4><small class="text-muted">Reply from:</small> {{reply.name }}</h4>
+              {{reply.body}}
+              <p>
+                <button class="btn btn-primary approve_reply_button" value="approvereply" data-id="{{reply.id}}">Approve</button>
+                <button class="btn btn-danger delete_reply_button" value="deletereply" data-id="{{reply.id}}">Delete</button>
+              </p>
+            </div>
+            {% endfor %}
+          {% else %}
+          <div class="timeline-item">
+            <h4>No new Replies</h4>
+          </div>
+          {% endif %}
+        </div>
+    </div>
+
+    <!-- /.panel-body -->
+</div>
+<!-- /.panel -->
+
+{% endblock %}

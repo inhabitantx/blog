@@ -1,0 +1,98 @@
+{% extends 'layout.html' %}
+
+{% block title %}
+  Search Results
+{% endblock %}
+
+
+{% block content %}
+<!-- Page Header -->
+   <header class="masthead" style="background-image: url('{{url_for('static', filename='img/home-bg.jpg') }}')">
+     <div class="overlay"></div>
+     <div class="container">
+       <div class="row">
+         <div class="col-lg-8 col-md-10 mx-auto">
+           <div class="site-heading">
+             <h1>{{blog.name}}</h1>
+           </div>
+         </div>
+       </div>
+     </div>
+   </header>
+
+   <!-- Main Content -->
+      <p class="h1" id="blogpost_header">Search Results</p>
+      <div class="container">
+      {% if posts %}
+       <div class="row">
+          <div class="col-md-12 mx-auto">
+            {% for post in posts %}
+          <div class="row">
+            <div class="row col-md-4 offset-md-2">
+              <a href="{{url_for('article', slug=post.slug)}}">
+                <h2 class="post-title">
+                 {{post.title}}
+                </h2>
+              </a>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-4 offset-md-2">
+            {% if post.img %}
+              <a href="{{url_for('article', slug=post.slug)}}">
+                <img class="post_preview_picture" src="{{post.imgsrc}}" />
+              </a>
+            {% endif %}
+            </div>
+            <div class="col-md-6">
+              <a href="{{url_for('article', slug=post.slug)}}">
+                <div class="post-preview">
+                  <h3 class="post-subtitle">
+                    Overview:
+                  </h3>
+                  <p>
+                    {{post.body[0:200]}} -
+                    <a class="read_more" href="{{url_for('article', slug=post.slug)}}">read more..</a>
+                  </p>
+                  <p class="post-meta">Posted by
+                    <a href="#">{{post.author.fullname}}</a>
+                    on {{post.publish_date.strftime('%d - %m - %y')}}</p>
+                  </div>
+                </a>
+              </div>
+          </div>
+          <hr>
+          {% endfor %}
+       </div>
+
+
+        <div class="col-md-5 offset-md-7"
+          <div class="clearfix">
+            <span>
+            {% if posts.has_next %}
+              <a class="btn btn-primary paginate_button" role="button" href="{{ url_for('index', page=posts.next_num) }}">Older Posts</a>
+            {% else %}
+            <button class="btn btn-primary paginate_button" disabled>Older Posts</button>
+            {% endif %}
+            </span>
+            <span>
+            {% if posts.has_prev %}
+            <a class="btn btn-primary paginate_button" role="button" href="{{ url_for('index', page=posts.prev_num) }}">Newer Posts</a>
+            {% else %}
+            <button class="btn btn-primary paginate_button" disabled>Newer Posts</button>
+            {% endif %}
+            </span>
+          </div>
+      {% else %}
+      <div>
+        <div class="row">
+          <div class="col-md-4 offset-md-4 mt-5 pt-5">
+            <h3>{{message}}</h3>
+          <div>
+        </div>
+      </div>
+      {% endif %}
+    </div>
+
+    <hr>
+{% endblock %}
