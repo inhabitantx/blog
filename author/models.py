@@ -1,4 +1,5 @@
-from final_project import db
+from blogapp.app import db
+from blog.models import Post
 
 
 class Author(db.Model):

@@ -13,13 +13,27 @@ class SetupForm(RegisterForm):
     category2 = StringField('Category # 2', [validators.Required(), validators.Length(min=2, max=60)])
     category3 = StringField('Category # 3', [validators.Required(), validators.Length(min=2, max=60)])
 
+
+class CommentForm(Form):
+    name = StringField('Your Name', [validators.Required(), validators.Length(max=80)])
+    email = EmailField('Your Email',[validators.Required(), validators.Length(max=80)] )
+    body = TextAreaField('Your Comment', [validators.Required()])
+
+class NewsletterForm(Form):
+    re = StringField('Re:', [validators.Required(), validators.Length(max=100)])
+    title = StringField('Heading', [validators.Required(), validators.Length(max=100)])
+    body = TextAreaField('Message', [validators.Required()])
+
+
+
 def maincategories():
+    print(maincategories)
     return MainCategory.query
 def subcategories():
+    print(subcategories)
     return SubCategory.query
 def subsubcategories():
     return SubSubCategory.query
-
 
 class PostForm(Form):
     image = FileField('Image', validators = [FileAllowed(['jpg', 'png'], 'Only .jpg or .png files are allowed') ])
@@ -31,13 +45,3 @@ class PostForm(Form):
     new_subcategory = StringField('New Subcategory', [validators.Length(max=60)])
     subsubcategory = QuerySelectField('Sub-Subcategory', query_factory=subsubcategories, allow_blank=True)
     new_subsubcategory = StringField('New Sub-Subcategory', [validators.Length(max=60)])
-
-class CommentForm(Form):
-    name = StringField('Your Name', [validators.Required(), validators.Length(max=80)])
-    email = EmailField('Your Email',[validators.Required(), validators.Length(max=80)] )
-    body = TextAreaField('Your Comment', [validators.Required()])
-
-class NewsletterForm(Form):
-    re = StringField('Re:', [validators.Required(), validators.Length(max=100)])
-    title = StringField('Heading', [validators.Required(), validators.Length(max=100)])
-    body = TextAreaField('Message', [validators.Required()])

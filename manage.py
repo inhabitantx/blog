@@ -1,11 +1,21 @@
 import os,sys
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__),  '..')))
 
+
 from flask_script import Manager, Server
-from final_project import app
+from flask.ext.migrate import Migrate
 from flask.ext.migrate import MigrateCommand
 
+
+
+from blogapp.app import create_app, db
+
+app = create_app('dev')
+
 manager = Manager(app)
+
+migrate = Migrate(app, db)
+
 
 manager.add_command('db', MigrateCommand)
 

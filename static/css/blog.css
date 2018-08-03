@@ -11,6 +11,7 @@ html{
   min-height: 100%;
   width: 100%;
   box-sizing: border-box;
+  z-index: -1;
 
 }
 
@@ -51,6 +52,8 @@ h1, h2, h3, h4, h5, h6{
 
 .container-fluid {
  min-height:100%;
+ background-color: white;
+ z-index: -1;
 }
 
 
@@ -211,6 +214,7 @@ nav ul li a{
 header {
   background-color: white;
   padding-bottom: 1em;
+  z-index: 999;
 }
 
 .logo-container {
@@ -800,15 +804,12 @@ section {
 .article_header_picture{
   position: fixed;
   top:-20px;
-  margin: 0 -20px;
-  width: 105%;
-  z-index: -1;
+  width: 100%;
+  z-index: 0;
 
 }
 
 .article-section{
-  margin-left: -15px;
-  margin-right: -15px;
   background-color: white;
   margin-top: 600px;
 
@@ -816,17 +817,13 @@ section {
 }
 
 .article-col {
-  width: 67%;
   margin-top: -100px !important;
-  margin-left: auto;
   background-color: white;
 
 }
 
 .article-aside{
-  width: 27%;
   margin-top: -100px !important;
-  margin-right: auto;
   background-color: white;
 }
 .comment-section{
@@ -844,9 +841,9 @@ footer {
   position:relative;
   padding: 5% 5%;
   bottom: 0;
-  margin:0 -5%;
+  margin:0 auto;
   background-color:white;
-  width:110%;
+  width:100%;
 }
 
 footer h2{

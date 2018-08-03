@@ -14,7 +14,7 @@
     <hr>
      {% from "_formhelpers.html" import render_field %}
 
-         <form action="{{ url_for('setup') }}" role="form" method="post">
+         <form action="{{ url_for('blog_app.setup') }}" role="form" method="post">
 
             {{form.hidden_tag() }}
 

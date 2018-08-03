@@ -17,7 +17,7 @@
           <div class="col-lg-8 offset-lg-2 col-md-10 mt-5 mb-5">
 
               {% from "_formhelpers.html" import render_field %}
-              <form method="POST" action="{{ url_for('newsletter') }}" role="form" class="newsletterform">
+              <form method="POST" action="{{ url_for('blog_app.newsletter') }}" role="form" class="newsletterform">
 
                 {{ form.hidden_tag() }}
 

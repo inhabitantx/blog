@@ -1,5 +1,7 @@
-from final_project import app, db
+from blogapp.app import db
+
 from flask import render_template, redirect, request, url_for, session, flash
+
 from author.form import RegisterForm, LoginForm, ChangePasswordForm
 from author.models import Author
 from blog.models import Blog
@@ -7,8 +9,13 @@ from author.decorators import login_required, author_required, admin_required
 import bcrypt
 
 
+from flask import Blueprint
 
-@app.route('/add_user', methods=['GET', 'POST'])
+author_app = Blueprint('author_app', __name__)
+
+
+
+@author_app.route('/add_user', methods=['GET', 'POST'])
 @admin_required
 def add_user():
 
@@ -37,11 +44,11 @@ def add_user():
 
             flash('User added successfully')
 
-            return redirect(url_for('admin'))
+            return redirect(url_for('admin_app.admin'))
 
     return render_template('/author/register.html', form=form, blog=blog)
 
-@app.route('/delete_user', methods=['GET', 'POST'])
+@author_app.route('/delete_user', methods=['GET', 'POST'])
 @admin_required
 def delete_user():
 
@@ -65,9 +72,9 @@ def delete_user():
 
         flash("Author deleted!")
 
-        return redirect(url_for('admin'))
+        return redirect(url_for('admin_app.admin'))
 
-@app.route('/change_password', methods=['GET', 'POST'])
+@author_app.route('/change_password', methods=['GET', 'POST'])
 @author_required
 def change_password():
 
@@ -95,7 +102,7 @@ def change_password():
 
 
 
-@app.route('/login', methods=['GET', 'POST'])
+@author_app.route('/login', methods=['GET', 'POST'])
 def login():
 
     error = None
@@ -105,40 +112,40 @@ def login():
     if request.method == 'GET' and request.args.get('next'):
         session['next'] = request.args.get('next')
 
-    if request.method == 'POST':
-        if form.validate_on_submit():
-            author = Author.query.filter_by(username = form.username.data).first()
-            if author:
-                if author.is_active:
-                    check = bcrypt.checkpw(form.password.data.encode('utf8'), author.password.encode('utf8'))
-                    if check:
-                        session['username'] = form.username.data
-                        session['is_author'] = author.is_author
-                        session['is_admin'] = author.is_admin
-                        session['is_active'] = author.is_active
-                        if 'next' in session:
-                            next = session.get('next')
-                            session.pop('next')
-                            return redirect(next)
-                        else:
-                            flash('Logged in')
-                            return redirect(url_for('admin'))
+    if form.validate_on_submit():
+        author = Author.query.filter_by(username = form.username.data).first()
+        if author:
+            if author.is_active:
+                check = bcrypt.checkpw(form.password.data.encode('utf8'), author.password.encode('utf8'))
+                if check:
+                    session['username'] = form.username.data
+                    session['is_author'] = author.is_author
+                    session['is_admin'] = author.is_admin
+                    session['is_active'] = author.is_active
+                    if 'next' in session:
+                        next = session.get('next')
+                        session.pop('next')
+
+                        return redirect(next)
                     else:
-                        error = 'Incorrect Username and Password'
+                        flash('Logged in')
+                        return redirect(url_for('admin_app.admin'))
                 else:
-                    error = 'Admin Account locked! Contact Site-Admin...'
+                    error = 'Incorrect Username and Password'
             else:
-                error="Incorrect username or password"
-                return render_template('author/login.html', form=form, error=error)
+                error = 'Admin Account locked! Contact Site-Admin...'
+        else:
+            error="Incorrect username or password"
+            return render_template('author/login.html', form=form, error=error)
 
 
     return render_template('/author/login.html', form=form, error=error)
 
 
-@app.route("/logout")
+@author_app.route("/logout")
 def logout():
     session.pop('username')
     session.pop('is_author')
     session.pop('is_active')
     flash('Logged out')
-    return redirect(url_for('index'))
+    return redirect(url_for('blog_app.index'))

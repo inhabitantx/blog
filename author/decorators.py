@@ -6,7 +6,7 @@ def login_required(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
         if session.get('username') == None:
-            return redirect(url_for('login', next=request.url))
+            return redirect(url_for('author_app.login', next=request.url))
         return f(*args, **kwargs)
     return decorated_function
 
@@ -17,7 +17,7 @@ def author_required(f):
             if session.get('is_author') == None:
                 abort(403)
         else:
-            return redirect(url_for('login'))
+            return redirect(url_for('author_app.login'))
         return f(*args, **kwargs)
     return decorated_function
 
@@ -28,6 +28,6 @@ def admin_required(f):
             if session.get('is_admin') == None:
                 abort(403)
         else:
-            return redirect(url_for('login'))
+            return redirect(url_for('author_app.login'))
         return f(*args, **kwargs)
     return decorated_function

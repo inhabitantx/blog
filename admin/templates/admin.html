@@ -41,7 +41,7 @@
               <!-- /.navbar-header -->
               {% if session['username'] %}
               <ul class="nav navbar-top-links navbar-right">
-                  <li><a href="{{url_for('logout') }}"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
+                  <li><a href="{{url_for('author_app.logout') }}"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
               </ul>
               {% endif %}
               <!-- /.navbar-top-links -->
@@ -58,28 +58,28 @@
               <!-- /input-group -->
                     <ul >
                         <li>
-                            <a href="{{ url_for('index') }}"><i class="fa fa-home fa-fw"></i>Home</a>
+                            <a href="{{ url_for('blog_app.index') }}"><i class="fa fa-home fa-fw"></i>Home</a>
                         </li>
                         <li>
-                            <a href="{{ url_for('admin') }}"><i class="fa fa-dashboard fa-fw"></i>Dashboard</a>
+                            <a href="{{ url_for('admin_app.admin') }}"><i class="fa fa-dashboard fa-fw"></i>Dashboard</a>
                         </li>
                 {% if blog %}
                         <li>
-                            <a href="{{ url_for('blogpost') }}"><i class="fa fa-edit fa-fw"></i>New Post</a>
+                            <a href="{{ url_for('admin_app.blogpost') }}"><i class="fa fa-edit fa-fw"></i>New Post</a>
                         </li>
                         <li>
-                            <a href="{{ url_for('newsletter') }}"><i class="fa fa-edit fa-fw"></i>Newsletter</a>
+                            <a href="{{ url_for('blog_app.newsletter') }}"><i class="fa fa-edit fa-fw"></i>Newsletter</a>
                         </li>
                         <li>
-                            <a href="{{url_for('change_password')}}"><i class="fa fa-key"></i>Change Password</a>
+                            <a href="{{url_for('author_app.change_password')}}"><i class="fa fa-key"></i>Change Password</a>
                         </li>
               {% endif %}
                         {% if session['is_admin'] %}
                         <li>
-                           <a href="{{url_for('add_user')}}"><i class="fa fa-user-plus"></i>Add User</a>
+                           <a href="{{url_for('author_app.add_user')}}"><i class="fa fa-user-plus"></i>Add User</a>
                         </li>
                         <li>
-                           <a href="{{url_for('delete_user')}}"><i class="fa fa-ban"></i>Delete User</a>
+                           <a href="{{url_for('author_app.delete_user')}}"><i class="fa fa-ban"></i>Delete User</a>
                         </li>
                         {% endif %}
                     </ul>

@@ -37,7 +37,7 @@
                 </div>
                 <div class="timeline-post">
                     <div class="timeline-heading">
-                        <h4 class="timeline-title"><a href="{{url_for('article', slug=post.slug) }}">{{ post.title }} {% if not post.live %}(Deleted){% endif %}</a></h4>
+                        <h4 class="timeline-title"><a href="{{url_for('blog_app.article', slug=post.slug) }}">{{ post.title }} {% if not post.live %}(Deleted){% endif %}</a></h4>
                         <p>
                             <small class="text-muted"><i class="fa fa-clock-o"></i>
                             Posted on {{ post.publish_date.strftime('%d - %m - %y') }} by <a href="#">{{post.author.fullname}}</a>
