@@ -13,7 +13,7 @@ from author.decorators import login_required, author_required
 
 from flask import Blueprint
 
-blog_app = Blueprint('blog_app', __name__)
+blog_app = Blueprint('blog_app', __name__, template_folder='templates')
 
 
 

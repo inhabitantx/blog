@@ -1,62 +1,8 @@
-class MenuItem extends React.Component {
-  constructor(props){
-    super(props)
+import React from 'react'
+import RenderDom from 'react-dom'
 
-    this.state = {
-      showMenu : false,
-    }
-    this.handleMouseOver = handleMouseOver.bind(this)
-    this.handleMouseOut = handleMouseOut.bind(this)
-  }
 
-  componentWillUnmount(){
-    clearTimeout(this.wait)
-  }
-  handleMouseOver(){
-    if(this.wait){
-      clearTimeout(this.wait)
-    }
-    this.setState({
-      showMenu: true,
-      })
-
-  }
-
-  handleMouseOut() {
-      this.wait = setTimeout(() => {
-        this.setState({
-          showMenu: false,
-      })
-    },100)
-  }
-
-  render(){
-
-    return(
-        <a className="react-menu-item-link" href={this.props.item.link}>
-          <div
-            className="react-menu-item dropdown-item"
-            onMouseEnter={this.handleMouseOver}
-            onMouseLeave={this.handleMouseOut}
-          >
-            <i className="fa fa-plus"></i>
-              {this.props.name}
-            {this.state.showMenu &&
-              <PopUp
-                visibility={this.state.showMenu}
-                enter={this.handleMouseOver}
-                leave={this.handleMouseOut}
-                name={this.props.name}
-                item={this.props.item}
-              />
-            }
-          </div>
-        </a>
-    )
-  }
-}
-
-class PopUp extends React.Component {
+export default class PopUp extends React.Component {
   constructor(props){
     super(props)
 
@@ -66,6 +12,7 @@ class PopUp extends React.Component {
   }
 
   componentDidMount(){
+    this._isMounted = true
   }
   componentWillMount(){
 
@@ -73,6 +20,7 @@ class PopUp extends React.Component {
   }
 
   componentWillUnmount(){
+    this._isMounted = false
   }
 
    fetchArticles = async (url, keyword) => {
@@ -83,15 +31,17 @@ class PopUp extends React.Component {
         body: JSON.stringify({keyword}),
       })
       const article = await response.json()
-      if(this.props.visibility){
+      if(this.props.visibility && this._isMounted){
         this.setState({
           articles : article,
         })
       }
     }catch(err){
-      this.setState({
-        error: err,
-      })
+      if(this.props.visibility && this._isMounted){
+        this.setState({
+          error: err,
+        })
+      }
     }
   }
 
@@ -103,7 +53,7 @@ class PopUp extends React.Component {
               onMouseEnter={this.props.enter}
               onMouseLeave={this.props.leave}
         >
-        {this.state.articles.length > 0 &&
+        {this.state.articles.length > 1 &&
           this.state.articles.map((article, index) => {
                 if(index === 0){
                   return(
@@ -160,59 +110,3 @@ const Article = (props) => {
     </div>
   )
 }
-
-class DropdownList extends React.Component {
-
-
-  render(){
-
-      this.menuitems = this.props.items.map(item => {
-        return(
-            <MenuItem
-                key={item.name}
-                name={item.name}
-                item={item}
-            />
-        )
-      })
-
-    return (
-              <div>
-                {this.menuitems}
-              </div>
-      )
-  }
-}
-
-const MENUITEMS = [
-  {
-    name : 'Recent',
-    link: '/blog',
-    url : 'fetcharticles',
-    keyword: 'Recent',
-  },
-  {
-    name : 'Travel',
-    link: '/blog/travel',
-    url : 'fetcharticles',
-    keyword: 'Travel',
-  },
-  {
-    name : 'Work',
-    link: '/blog/work',
-    url : 'fetcharticles',
-    keyword: 'Work',
-  },
-  {
-    name : 'Photography',
-    link: '/blog/photography',
-    url : 'fetcharticles',
-    keyword: 'Photography',
-  },
-]
-
-
-ReactDOM.render(
-  <DropdownList items={MENUITEMS} />,
-  document.getElementById('react-menu-item')
-);
