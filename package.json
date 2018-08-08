@@ -1,0 +1,46 @@
+{
+  "name": "blogapp",
+  "version": "1.0.0",
+  "description": "React Components for Microblog v0.0.1",
+  "main": "index.js",
+  "scripts": {
+    "build": "webpack --config webpack.config.js",
+    "build:prod": "webpack -p",
+    "watch": "webpack --watch",
+    "dev": "webpack --mode development",
+    "start": "python manage.py runserver"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/inhabitantx/blog.git"
+  },
+  "keywords": [
+    "react",
+    "blog"
+  ],
+  "author": "inhabitantx",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/inhabitantx/blog/issues"
+  },
+  "homepage": "https://github.com/inhabitantx/blog#readme",
+  "dependencies": {
+    "babel-loader": "^7.1.5",
+    "babel-polyfill": "^6.26.0"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.3",
+    "babel-plugin-transform-async-to-generator": "^6.24.1",
+    "babel-plugin-transform-class-properties": "^6.24.1",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-es2016": "^6.24.1",
+    "babel-preset-react": "^6.24.1",
+    "babel-preset-stage-3": "^6.24.1",
+    "react": "^16.4.2",
+    "react-dom": "^16.4.2",
+    "webpack": "^4.16.4",
+    "webpack-cli": "^3.1.0"
+  }
+}
