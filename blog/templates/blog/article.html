@@ -1,35 +1,43 @@
 {% extends "layout.html" %}
 
 {% block title %} {{ post.title }} {% endblock %}
-
 {% block head %}
-{% if post.img %}
-    <img class="article_header_picture mt-3 mb-3" src="{{post.imgsrc}}" />
-{% endif %}
+  {{ super() }}
 {% endblock %}
+
 {% block content %}
-<div class="row article-section ">
-  <img class="article_header_picture mt-3 mb-3" src="{{post.imgsrc}}" />
-    <article class="col-lg-8 col-md-12 mt-4 pb-5 pt-3 pl-5 article-col">
+{% if post.img %}
+  <div class="article-img-container">
       <h1 class="article-title">{{ post.title }}</h1>
-      <p>
-          <small class="text-muted"><i class="fa fa-clock-o"></i>
-          Posted on {{ post.publish_date.strftime('%d - %m - %y') }} by <a href="#">{{post.author.fullname}}</a>
-          in <a href='#'>{{post.maincategory.name}}</a>
-          </small>
-      </p>
-      {% if session.get('is_author') %}
-      <p>
-          <a class="btn btn-primary" href="{{url_for('blog_app.edit', post_id=post.id) }}">Edit</a>
-          <a class="btn btn-primary" href="{{url_for('blog_app.delete', post_id=post.id) }}">Delete</a>
-      </p>
-      {% endif %}
-
-
-      <h2 class="article_heading mb-5 mt-3">{{post.title}}</h2>
-      <div class="post_body">
-        {{ post.body }}
+      <img class="article_header_picture mt-3 mb-3" src="{{post.imgsrc}}" />
   </div>
+{% else %}
+<div class="article-img-container">
+    <h1 class="article-title">{{ post.title }}</h1>
+    <img class="article_header_picture mt-3 mb-3" src="static/img/default.jpg" />
+</div>
+{% endif %}
+  <div class="row article-section ">
+      <article class="col-lg-9 col-md-12 article-col">
+        <h1 class="article-title">{{ post.title }}</h1>
+        <p>
+            <small class="text-muted"><i class="fa fa-clock-o"></i>
+            Posted on {{ post.publish_date.strftime('%d - %m - %y') }} by <a href="#">{{post.author.fullname}}</a>
+            in <a href='#'>{{post.maincategory.name}}</a>
+            </small>
+        </p>
+        {% if session.get('is_author') %}
+        <p>
+            <a class="btn btn-primary" href="{{url_for('blog_app.edit', post_id=post.id) }}">Edit</a>
+            <a class="btn btn-primary" href="{{url_for('blog_app.delete', post_id=post.id) }}">Delete</a>
+        </p>
+        {% endif %}
+
+
+        <h2 class="article_heading mb-5 mt-3">{{post.title}}</h2>
+        <div class="post_body">
+          {{ post.body }}
+    </div>
 
 
 
@@ -38,7 +46,7 @@
      </div>
 
    </article>
-    <aside class="col-lg-3 article-aside mt-5 pt-5 pr-5">
+    <aside class="col-lg-3 article-aside">
       <h1 class="aside-heading mt-5">Search</h1>
       <div class="aside-content">
         <form>

@@ -1,10 +1,12 @@
-from flask import render_template, session, request, url_for, redirect
+from flask import render_template, session, request, url_for, redirect, flash
 from slugify import slugify
 from author.decorators import login_required, author_required
+from blogapp.app import uploaded_images
 import json
 
 
 from blogapp.app import db
+from author.models import Author
 from blog.models import Blog, Post, MainCategory, SubCategory, SubSubCategory, Comment, Reply
 from blog.form import PostForm
 
@@ -14,6 +16,10 @@ admin_app = Blueprint('admin_app', __name__, template_folder='templates')
 
 
 # main admin route renders dashboard
+
+
+
+
 
 @admin_app.route("/admin")
 @author_required
@@ -68,72 +74,72 @@ def blogpost():
 
     form = PostForm()
     filename = None
-    if request.method == 'POST':
-        if form.validate_on_submit():
-            image = request.files.get('image')
-            if image:
-                try:
-                    filename = uploaded_images.save(image)
-                except:
-                    flash('The image could not be uploaded')
-            else:
-                print("File error!")
+
+    if form.validate_on_submit():
+        image = request.files.get('image')
+        if image:
+            try:
+                filename = uploaded_images.save(image)
+            except:
+                flash('The image could not be uploaded')
+        else:
+            print("File error!")
 
 
-            maincategory = form.maincategory.data
+        maincategory = form.maincategory.data
 
 
-            if form.new_subcategory.data:
-                if not SubCategory.query.filter_by(name=form.new_subcategory.data).first():
-                    maincategory.add_subcategory(form.new_subcategory.data, maincategory.id)
-                subcategory = SubCategory.query.filter_by(name=form.new_subcategory.data).first()
-            elif form.subcategory.data:
-                subcategory = form.subcategory.data
-            else:
-                if(not SubCategory.query.filter_by(name = "No Category")):
-                    maincategory.add_subcategory("No Category", maincategory.id)
+        if form.new_subcategory.data:
+            if not SubCategory.query.filter_by(name=form.new_subcategory.data).first():
+                maincategory.add_subcategory(form.new_subcategory.data, maincategory.id)
+            subcategory = SubCategory.query.filter_by(name=form.new_subcategory.data).first()
+        elif form.subcategory.data:
+            subcategory = form.subcategory.data
+        else:
+            if(not SubCategory.query.filter_by(name = "No Category")):
+                maincategory.add_subcategory("No Category", maincategory.id)
 
-                subcategory = SubCategory.query.filter_by(name="No Category").first()
-
-
-            if form.new_subsubcategory.data:
-                if not SubSubCategory.query.filter_by(name=form.new_subsubcategory.data).first():
-                    subcategory.add_subsubcategory(form.new_subsubcategory.data, subcategory.id)
-                subsubcategory = SubSubCategory.query.filter_by(name=form.new_subsubcategory.data).first()
-
-            elif form.subsubcategory.data:
-                subsubcategory = form.subsubcategory.data
-            else:
-                if(not SubSubCategory.query.filter_by(name="No Category").first()):
-                    subcategory.add_subsubcategory("No Category", subcategory.id)
-
-                subsubcategory = SubSubCategory.query.filter_by(name="No Category").first()
+            subcategory = SubCategory.query.filter_by(name="No Category").first()
 
 
-            blog = Blog.query.first()
-            author = Author.query.filter_by(username=session['username']).first()
-            title = form.title.data
-            body = form.body.data
+        if form.new_subsubcategory.data:
+            if not SubSubCategory.query.filter_by(name=form.new_subsubcategory.data).first():
+                subcategory.add_subsubcategory(form.new_subsubcategory.data, subcategory.id)
+            subsubcategory = SubSubCategory.query.filter_by(name=form.new_subsubcategory.data).first()
 
-            slug = slugify(title)
-            post = Post(blog, author, title, body, maincategory.id, subcategory.id, subsubcategory.id, filename, slug)
+        elif form.subsubcategory.data:
+            subsubcategory = form.subsubcategory.data
+        else:
+            if(not SubSubCategory.query.filter_by(name="No Category").first()):
+                subcategory.add_subsubcategory("No Category", subcategory.id)
 
-            # Now add the Keywords
-
-            # Extract Keywords from form and add them to Table
-            if form.keywords.data:
-                keywordstring = form.keywords.data
-
-                # Remove whitespaces and split
-                keywords = keywordstring.replace(' ', '').split(",")
-
-                post.add_keywords(keywords)
+            subsubcategory = SubSubCategory.query.filter_by(name="No Category").first()
 
 
-            db.session.add(post)
-            db.session.commit()
+        blog = Blog.query.first()
+        author = Author.query.filter_by(username=session['username']).first()
+        title = form.title.data
+        body = form.body.data
 
-            return redirect(url_for('article', slug=slug))
+        slug = slugify(title)
+        post = Post(blog, author, title, body, maincategory.id, subcategory.id, subsubcategory.id, filename, slug)
+
+        # Now add the Keywords
+
+        # Extract Keywords from form and add them to Table
+        if form.keywords.data:
+            keywordstring = form.keywords.data
+
+            # Remove whitespaces and split
+            keywords = keywordstring.replace(' ', '').split(",")
+
+            post.add_keywords(keywords)
+
+
+        db.session.add(post)
+        db.session.commit()
+
+        return redirect(url_for('blog_app.article', slug=slug))
 
 
 

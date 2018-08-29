@@ -8,7 +8,7 @@ from blogapp.app import db
 from blog.form import SetupForm, CommentForm, NewsletterForm, PostForm
 from blogapp.app import uploaded_images
 from author.models import Author
-from blog.models import Blog, MainCategory, SubCategory, SubSubCategory, Keywords, Post
+from blog.models import Blog, MainCategory, SubCategory, SubSubCategory, Keywords, Post, Subscribers
 from author.decorators import login_required, author_required
 
 from flask import Blueprint
@@ -141,7 +141,6 @@ def fetcharticles():
         allrows = []
         for article in articles:
             allrows.append({"title":article.title, "body": article.body[0:150], "img":article.img, "slug":article.slug})
-
 
         return json.dumps(allrows)
     else:
@@ -285,7 +284,7 @@ def edit(post_id):
         db.session.commit()
         return redirect(url_for('.article', slug = post.slug))
 
-    return render_template('/blog/post.html', form=form, post=post, action='edit', blog=blog)
+    return render_template('/admin/post.html', form=form, post=post, action='edit', blog=blog)
 
 
 @blog_app.route("/delete/<int:post_id>")

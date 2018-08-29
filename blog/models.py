@@ -66,6 +66,9 @@ class Post(db.Model):
 
     @property
     def imgsrc(self):
+        if(self.img == None):
+            return uploaded_images.url("default.jpg")
+        
         return uploaded_images.url(self.img)
 
     def add_comment(self, post_id, name, email, body):

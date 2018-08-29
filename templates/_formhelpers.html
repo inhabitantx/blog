@@ -2,7 +2,7 @@
 
 <div class="col-md-12 form-group">
     {{ field.label }}
-    {{ field(**kwargs)|safe}}
+    {{ field(*args,**kwargs)|safe}}
 
     {% if field.errors %}
             {% for error in field.errors %}

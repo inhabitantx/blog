@@ -6,6 +6,7 @@ import SubscriptionPopUp from './react-subscription-popup/SubscriptionPopUp'
 import PopUpMenu from './react-pop-up-menu/PopUpMenu'
 
 
+
 if(document.getElementById('subscription-popup')){
   ReactDOM.render(<SubscriptionPopUp
                     canBeClosed="true"
@@ -20,6 +21,7 @@ if(document.getElementById('footer-subscription')){
         formClass="footer-form"
         inputClass="form-control"
         buttonClass="btn btn-dark footer-button"
+        showForm="true"
     />,
     document.getElementById('footer-subscription')
   )

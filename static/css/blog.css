@@ -244,6 +244,7 @@ header {
 
 nav {
   background-color:white;
+  z-index:999;
 }
 
 nav ul li a{
@@ -292,6 +293,9 @@ nav ul li a{
 }
 .popup:hover {
   cursor:default;
+}
+.nav-article a, .featured-nav-article a{
+  color: black;
 }
 
 .featured-nav-article img:hover ,.featured-nav-article .content:hover,
@@ -820,30 +824,33 @@ section {
 }
 /* ################ Article Section ###################### */
 
-
-.article_header_picture{
-  position: fixed;
-  top:-20px;
+.article-img-container{
   width: 100%;
-  z-index: 0;
-
+  max-height: 700px;
+  margin: 0 auto;
+  overflow:hidden;
 }
-
+.article_header_picture{
+  position: relative;
+  width: 100%;
+  height: auto !important;
+}
 .article-section{
+  width: 85%;
+  margin: 0 auto;
   background-color: white;
-  margin-top: 600px;
-
-
+  z-index:99;
 }
 
 .article-col {
-  margin-top: -100px !important;
+  padding: 2% 2%;
+  margin-top: -10% !important;
   background-color: white;
 
 }
 
 .article-aside{
-  margin-top: -100px !important;
+  margin-top: -10% !important;
   background-color: white;
 }
 .comment-section{

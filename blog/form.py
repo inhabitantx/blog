@@ -27,10 +27,8 @@ class NewsletterForm(Form):
 
 
 def maincategories():
-    print(maincategories)
     return MainCategory.query
 def subcategories():
-    print(subcategories)
     return SubCategory.query
 def subsubcategories():
     return SubSubCategory.query

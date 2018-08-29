@@ -23,7 +23,7 @@ export default class PopUp extends React.Component {
     this._isMounted = false
   }
 
-   fetchArticles = async (url, keyword) => {
+  fetchArticles = async (url, keyword) => {
     try{
       const response = await fetch(`/${url}`, {
         method: 'POST',
@@ -47,7 +47,7 @@ export default class PopUp extends React.Component {
 
    render(){
 
-
+      console.log("hallo")
       return(
         <div  className="popup"
               onMouseEnter={this.props.enter}
@@ -94,9 +94,11 @@ const FeaturedArticle = (props) => {
   return(
     <div className="featured-nav-article">
       <h2>Latest:</h2>
-      <img className="react-popup-thumbnail" src={"/static/img/" + props.imgurl} alt={props.title} />
-      <h2 className="content">{props.title}</h2>
-      <p className="content" >{deleteMarkup(props.body)}</p>
+        <a href={"/article/" + props.slug}>
+          <img className="react-popup-thumbnail" src={"/static/img/" + props.imgurl} alt={props.title} />
+          <h2 className="content">{props.title}</h2>
+          <p className="content" >{deleteMarkup(props.body)}</p>
+        </a>
     </div>
   )
 }
@@ -104,9 +106,11 @@ const Article = (props) => {
 
   return(
     <div className="nav-article">
-      <img className="react-popup-thumbnail" src={"/static/img/" + props.imgurl} alt={props.title} />
-      <h2 className="content">{props.title}</h2>
-      <p className="content">{deleteMarkup(props.body)}</p>
+      <a href={"/article/" + props.slug}>
+        <img className="react-popup-thumbnail" src={"/static/img/" + props.imgurl} alt={props.title} />
+        <h2 className="content">{props.title}</h2>
+        <p className="content">{deleteMarkup(props.body)}</p>
+      </a>
     </div>
   )
 }
